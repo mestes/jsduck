@@ -22,7 +22,9 @@ Ext.application({
 
     requires: [
         'Ext.MessageBox',
-        'Docs.ClassRegistry'
+        'Docs.ClassRegistry',
+        'Ext.TitleBar',
+        'Ext.field.Search'
     ],
 
     views: [

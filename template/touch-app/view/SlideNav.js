@@ -152,7 +152,9 @@ Ext.define("TouchDocs.view.SlideNav", {
             },
             onEnd: open ? null : function() {
                 // re-enable scrolling of main container once left sideContainer has closed
-                this.getContainer().getScrollable().getScroller().setDisabled(false);
+                if (this.getContainer().getScrollable()) {
+                    this.getContainer().getScrollable().getScroller().setDisabled(false);
+                }
             },
             preserveEndState: true,
             scope: this

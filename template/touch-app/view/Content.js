@@ -148,7 +148,9 @@ Ext.define('TouchDocs.view.Content', {
      * @param {Boolean} [animate=false] True to animate the scrolling.
      */
     scrollToTop: function(animate) {
-        this.getAt(1).getScrollable().getScroller().scrollTo(0, 0, animate);
+        if (this.getAt(1).getScrollable()) {
+            this.getAt(1).getScrollable().getScroller().scrollTo(0, 0, animate);
+        }
     },
 
     /**

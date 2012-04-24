@@ -4,6 +4,7 @@
  */
 Ext.define('TouchDocs.controller.Navigation', {
     extend: 'Ext.app.Controller',
+    requires: ['Ext.data.JsonP'],
 
     config: {
         routes: {

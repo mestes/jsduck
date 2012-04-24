@@ -304,11 +304,6 @@ class JsDuckRunner
     system "cp -r #{EXT_BUILD} #{OUT_DIR}/extjs-build"
   end
 
-  # Copy over Sencha Touch
-  def copy_touch2_build
-    system "cp -r #{TOUCH_BUILD} #{OUT_DIR}/touch"
-  end
-
   def run
     # Pass multiple arguments to system, so we'll take advantage of the built-in escaping
     system(*["ruby", "bin/jsduck"].concat(@options))
@@ -550,7 +545,7 @@ task :touchapp do
   system "cp -r template-min-touch/touch-build/cache.manifest #{OUT_DIR}"
   system "cp -r template-min-touch/touch-build/touch-app.js #{OUT_DIR}"
   system "cp -r template-min-touch/touch-build/touch-template.html #{OUT_DIR}"
-  system "cp -r template-min-touch/touch-build/touch/sencha-touch-jsduck.js #{OUT_DIR}/touch"
+  system "cp -r template-min-touch/touch-build/touch/sencha-touch-debug.js #{OUT_DIR}/touch"
   system "rm -rf #{OUT_DIR}/touch-app"
 end
 
