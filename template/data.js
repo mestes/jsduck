@@ -1,4 +1,4 @@
-// Empty data file. Needed to build Touch app.
+// Empty data file. Needed to build the Docs app.
 Docs = {
     data: {
         localStorageDb: "docs",
