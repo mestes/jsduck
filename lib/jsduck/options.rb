@@ -34,6 +34,7 @@ module JsDuck
     attr_accessor :seo
     attr_accessor :eg_iframe
     attr_accessor :examples_base_url
+    attr_accessor :tests
 
     # Debugging
     attr_accessor :processes
@@ -74,7 +75,7 @@ module JsDuck
       ]
       @meta_tag_paths = []
 
-      @version = "3.9.1"
+      @version = "3.10.0"
 
       # Customizing output
       @title = "Sencha Docs - Ext JS"
@@ -99,6 +100,7 @@ module JsDuck
       @seo = false
       @eg_iframe = nil
       @examples_base_url = "extjs-build/examples/"
+      @tests = false
 
       # Debugging
       # Turn multiprocessing off by default in Windows
@@ -221,11 +223,6 @@ module JsDuck
           @examples = canonical(path)
         end
 
-        opts.on('--stats',
-          "Creates page with all kinds of statistics. Experimental!", " ") do
-          @stats = true
-        end
-
         opts.on('--categories=PATH',
           "Path to JSON file which defines categories for classes.", " ") do |path|
           @categories_path = canonical(path)
@@ -271,8 +268,9 @@ module JsDuck
 
         opts.on('--export=TYPE',
           "Exports docs in JSON.  TYPE is one of:",
-          "* full - full class docs.",
-          "* api  - only class- and member names.", " ") do |format|
+          "* full     - full class docs.",
+          "* api      - only class- and member names.",
+          "* examples - extracts inline examples from classes.", " ") do |format|
           @export = format.to_sym
         end
 
@@ -289,6 +287,15 @@ module JsDuck
         opts.on('--examples-base-url=URL',
           "Base URL for examples with relative URL-s.", " ") do |path|
           @examples_base_url = path
+        end
+
+        opts.on('--tests', "Creates page for testing inline examples.", " ") do
+          @tests = true
+        end
+
+        opts.on('--stats',
+          "Creates page with all kinds of statistics. Experimental!", " ") do
+          @stats = true
         end
 
         opts.separator "Debugging:"
@@ -487,7 +494,7 @@ module JsDuck
       elsif @output_dir == :stdout && !@export
         puts "Output to STDOUT only works when using --export option."
         exit(1)
-      elsif ![nil, :full, :api].include?(@export)
+      elsif ![nil, :full, :api, :examples].include?(@export)
         puts "Unknown export format: #{@export}"
         exit(1)
       elsif @output_dir != :stdout

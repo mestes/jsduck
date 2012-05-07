@@ -166,7 +166,7 @@ class JsDuckRunner
       "--footer", "Ext JS 4.0 Docs - Generated with <a href='https://github.com/senchalabs/jsduck'>JSDuck</a> {VERSION}." +
                   " <a href='http://www.sencha.com/legal/terms-of-use/'>Terms of Use</a>",
       "--ignore-global",
-      "--no-warnings",
+      "--warnings", "-all",
       "--images", "#{EXT_BUILD}/docs/doc-resources",
       "--local-storage-db", "ext-4",
       "--output", "#{OUT_DIR}",
@@ -216,7 +216,10 @@ task :ext4 => :sass do
   runner = JsDuckRunner.new
   runner.add_ext4
   runner.add_debug
+  runner.add_options("--tests")
   runner.run
+
+  system("cp -r #{EXT_BUILD} #{OUT_DIR}/extjs-build")
 end
 
 desc "Run JSDuck on Ext JS from SDK repo (for internal use at Sencha)"
@@ -225,7 +228,9 @@ task :sdk => :sass do
   runner.add_options(
     "--output", OUT_DIR,
     "--config", "#{SDK_DIR}/extjs/docs/config.json",
-    "--examples-base-url", "extjs-build/examples/"
+    "--examples-base-url", "extjs-build/examples/",
+    "--seo",
+    "--tests"
   )
   runner.add_debug
   runner.add_comments('ext-js', '4')
@@ -240,7 +245,9 @@ task :touch2 => :sass do
   runner.add_options(
     "--output", OUT_DIR,
     "--config", "#{SDK_DIR}/touch/docs/config.json",
-    "--examples-base-url", "touch/examples/production/"
+    "--examples-base-url", "touch/examples/production/",
+    "--seo",
+    "--tests"
   )
 
   runner.add_debug
