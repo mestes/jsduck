@@ -15,6 +15,7 @@ describe JsDuck::DocFormatter do
           {:tagname => :method, :name => "bar", :id => "method-bar"},
           {:tagname => :method, :name => "id", :id => "static-method-id",
             :meta => {:static => true}},
+          {:tagname => :method, :name => "__foo", :id => "method-__foo"},
         ],
       }),
       JsDuck::Class.new({
@@ -27,10 +28,28 @@ describe JsDuck::DocFormatter do
           {:tagname => :method, :name => "id", :id => "static-method-id",
             :meta => {:static => true}},
           {:tagname => :method, :name => "privMeth", :id => "method-privMeth", :private => true},
+          {:tagname => :method, :name => "__foo", :id => "method-__foo"},
         ],
         :alternateClassNames => ["FooBar"]
       }),
     ])
+  end
+
+  describe "#format" do
+    it "formats {@link Foo#__foo} without conflicting with markdown parser" do
+      @formatter.format("Look at {@link Foo#__foo}").should ==
+        '<p>Look at <a href="Foo#method-__foo">Foo.__foo</a></p>'+"\n"
+    end
+
+    it "formats {@link #__foo} without conflicting with markdown parser" do
+      @formatter.format("Look at {@link #__foo}").should ==
+        '<p>Look at <a href="Context#method-__foo">__foo</a></p>'+"\n"
+    end
+
+    it "replaces {@link #__foo __foo} without conflicting with markdown parser" do
+      @formatter.format("Look at {@link #__foo __foo}").should ==
+        '<p>Look at <a href="Context#method-__foo">__foo</a></p>'+"\n"
+    end
   end
 
   describe "#replace" do
