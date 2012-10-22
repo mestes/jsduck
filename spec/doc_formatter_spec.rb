@@ -52,8 +52,13 @@ describe JsDuck::DocFormatter do
     end
 
     it "replaces #__foo and #__foo with two links to #__foo method" do
-      @formatter.format("Look at X__foo and X__foo").should ==
+      @formatter.format("Look at #__foo and #__foo").should ==
         '<p>Look at <a href="Context#method-__foo">__foo</a> and <a href="Context#method-__foo">__foo</a></p>'+"\n"
+    end
+
+    it "replaces Foo#__foo and Foo#__foo with two links to Foo#__foo method" do
+      @formatter.format("Look at Foo#__foo and Foo#__foo").should ==
+        '<p>Look at <a href="Foo#method-__foo">Foo.__foo</a> and <a href="Foo#method-__foo">Foo.__foo</a></p>'+"\n"
     end
   end
 
