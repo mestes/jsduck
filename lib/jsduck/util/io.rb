@@ -26,6 +26,11 @@ module JsDuck
         File.open(filename, "r:"+@@encoding) {|f| f.read }
       end
 
+      # Writes given string to file
+      def self.write(filename, contents)
+        File.open(filename, "w") {|f| f.write(contents) }
+      end
+
     end
 
   end

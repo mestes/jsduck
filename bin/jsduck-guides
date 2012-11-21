@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+# JsDuck is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# JsDuck is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with JsDuck.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2010 Rene Saarsoo.
+
+# For running when gem not installed
+$:.unshift File.dirname(File.dirname(__FILE__)) + "/lib"
+
+require 'rubygems'
+require 'optparse'
+require 'ostruct'
+require 'jsduck/html_guides'
+
+opts = OpenStruct.new
+opts.template_dir = "template"
+
+optparser = OptionParser.new do | opar |
+  opar.banner = "Usage: jsduck-guides -o output/dir/ guides.json"
+
+  opar.on('-o', '--output=PATH', "Directory to write these guides.") do |path|
+    opts.output_dir = path
+  end
+
+  opar.on('--template=PATH', "Template directory path.") do |path|
+    opts.template_dir = path
+  end
+
+  opar.on('-h', '--help', "Prints this help.") do |path|
+    puts opar
+    exit(0)
+  end
+end
+
+opts.guides = optparser.parse!(ARGV)[0]
+
+unless opts.guides && opts.output_dir
+  puts "You need to specify the guides.json config file and output dir."
+  exit(1)
+end
+
+JsDuck::HtmlGuides.new(opts).write(opts.output_dir)
